@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.heytz.baiduvoicesdk" version="0.3.1" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <name>baiduvoicesdk</name>
+    <js-module name="baiduvoicesdk" src="www/baiduvoicesdk.js">
+        <clobbers target="cordova.plugins.baiduvoicesdk"/>
+    </js-module>
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="baiduvoicesdk">
+                <param name="android-package" value="com.heytz.baiduvoicesdk.baiduvoicesdk"/>
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <uses-library android:name="jp.co.sharp.android.voiceui.framework" android:required="true" />
+            <meta-data
+                    android:name="com.baidu.speech.APP_ID"
+                    android:value="11194650" />
+            <meta-data
+                    android:name="com.baidu.speech.API_KEY"
+                    android:value="vtPSfelas3ycuEtW3uGmGl1B" />
+            <meta-data
+                    android:name="com.baidu.speech.SECRET_KEY"
+                    android:value="34f378211d11588f85576618ab22efd3" />
+            <service
+                    android:name="com.baidu.speech.VoiceRecognitionService"
+                    android:exported="false" />
+        </config-file>
+        <source-file src="src/android/baiduvoicesdk.java" target-dir="src/com/heytz/baiduvoicesdk"/>
+        <source-file src="libs/bdasr_V3_20180320_9066860.jar" target-dir="libs"/>
+        <source-file src="libs/jp.co.sharp.android.voiceui.framework.jar" target-dir="libs"/>
+        <source-file src="libs/arm64-v8a/" target-dir="libs"/>
+        <source-file src="libs/armeabi/" target-dir="libs"/>
+        <source-file src="libs/armeabi-v7a/" target-dir="libs"/>
+        <source-file src="libs/x86/" target-dir="libs"/>
+        <source-file src="libs/x86_64/" target-dir="libs"/>
+    </platform>
+</plugin>

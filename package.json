@@ -1,0 +1,9 @@
+{
+  "version": "0.0.1",
+  "name": "com.heytz.baiduvoicesdk",
+  "cordova_name": "baiduvoicesdk",
+  "platforms": [
+    "android"
+  ],
+  "engines": []
+}
