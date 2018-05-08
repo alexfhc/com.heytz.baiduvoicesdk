@@ -34,17 +34,7 @@ public class baiduvoicesdk extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         context = cordova.getActivity().getApplicationContext();
-        VoiceUIManager vm = VoiceUIManager.getService(context);
-        try {
-            vm.notifyDisableMic();
-            sleep(1000);
-        } catch (Exception e) {
 
-        }
-        wp = EventManagerFactory.create(context, "wp");
-        wp.registerListener(wakeupListener);
-        asr = EventManagerFactory.create(context, "asr");
-        asr.registerListener(voiceListener);
     }
 
     @Override
@@ -62,6 +52,17 @@ public class baiduvoicesdk extends CordovaPlugin {
             return true;
         }
         if (action.equals("init")) {
+            try {
+                VoiceUIManager vm = VoiceUIManager.getService(context);
+                sleep(500);
+                vm.notifyDisableMic();
+                wp = EventManagerFactory.create(context, "wp");
+                wp.registerListener(wakeupListener);
+                asr = EventManagerFactory.create(context, "asr");
+                asr.registerListener(voiceListener);
+            } catch (Exception e) {
+
+            }
 //            String json = "{\"accept-audio-data\":false,\"disable-punctuation\":false,\"accept-audio-volume\":true,\"pid\":15361}";
 //            asr.send(SpeechConstant.ASR_START, json, null, 0, 0);
             return true;
