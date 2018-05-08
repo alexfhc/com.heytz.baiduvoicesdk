@@ -42,6 +42,6 @@
         <source-file src="libs/armeabi-v7a/" target-dir="libs"/>
         <source-file src="libs/x86/" target-dir="libs"/>
         <source-file src="libs/x86_64/" target-dir="libs"/>
-        <source-file src="assets/WakeUp.bin" target-dir="assets/WakeUp.bin"/>
+        <source-file src="assets/WakeUp.bin" target-dir="assets"/>
     </platform>
 </plugin>
