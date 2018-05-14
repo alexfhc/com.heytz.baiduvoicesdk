@@ -26,7 +26,7 @@
             <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
         </config-file>
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
-            <uses-library android:name="jp.co.sharp.android.voiceui.framework" android:required="true" />
+            <!--<uses-library android:name="jp.co.sharp.android.voiceui.framework" android:required="true" />-->
             <meta-data
                     android:name="com.baidu.speech.APP_ID"
                     android:value="11194650" />
@@ -43,7 +43,7 @@
         <source-file src="src/android/baiduvoicesdk.java" target-dir="src/com/heytz/baiduvoicesdk"/>
         <source-file src="libs/bdasr_V3_20180320_9066860.jar" target-dir="libs"/>
         <source-file src="libs/com.baidu.tts_2.3.1.20170808_e39ea89.jar" target-dir="libs"/>
-        <source-file src="libs/jp.co.sharp.android.voiceui.framework.jar" target-dir="libs"/>
+        <!--<source-file src="libs/jp.co.sharp.android.voiceui.framework.jar" target-dir="libs"/>-->
         <source-file src="libs/arm64-v8a/" target-dir="libs"/>
         <source-file src="libs/armeabi/" target-dir="libs"/>
         <source-file src="libs/armeabi-v7a/" target-dir="libs"/>
