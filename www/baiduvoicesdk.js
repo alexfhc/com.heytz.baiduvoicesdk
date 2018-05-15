@@ -14,8 +14,8 @@ exports.stop = function () {
   exec(null, null, "baiduvoicesdk", "stop",
     []);
 };
-exports.announce = function (word, success, error) {
-  exec(success, error, "baiduvoicesdk", "announce",
+exports.announce = function (word) {
+  exec(null, null, "baiduvoicesdk", "announce",
     [word]);
 };
 // exports.startPlay = function () {

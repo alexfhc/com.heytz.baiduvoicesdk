@@ -4,7 +4,6 @@ package com.heytz.baiduvoicesdk;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
-import android.os.RemoteException;
 import android.util.Log;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
@@ -12,9 +11,6 @@ import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
-import com.heytz.optimus.customize.ScenarioDefinitions;
-import com.heytz.optimus.util.VoiceUIManagerUtil;
-import com.heytz.optimus.util.VoiceUIVariableUtil;
 import jp.co.sharp.android.voiceui.VoiceUIManager;
 import org.apache.cordova.*;
 import org.json.JSONArray;
@@ -40,7 +36,7 @@ public class baiduvoicesdk extends CordovaPlugin {
     private String result = "";
     private EventManager asr = null;
     private EventManager wp = null;
-    private VoiceUIManager vm = null;
+    private VoiceUIManager mVoiceUIManager = null;
     private SpeechSynthesizer mSpeechSynthesizer = null;
     protected String appId = "11194650";
 
@@ -108,9 +104,11 @@ public class baiduvoicesdk extends CordovaPlugin {
         }
         if (action.equals("init")) {
             try {
-                vm = VoiceUIManager.getService(context);
-                sleep(500);
-                vm.notifyDisableMic();
+                if (mVoiceUIManager == null) {
+                    mVoiceUIManager = VoiceUIManager.getService(context);
+                }
+                sleep(1500);
+                mVoiceUIManager.notifyDisableMic();
                 wp = EventManagerFactory.create(context, "wp");
                 wp.registerListener(wakeupListener);
                 asr = EventManagerFactory.create(context, "asr");
@@ -139,10 +137,7 @@ public class baiduvoicesdk extends CordovaPlugin {
                     mSpeechSynthesizer.setAudioStreamType(AudioManager.MODE_IN_CALL);
                     mSpeechSynthesizer.initTts(TtsMode.MIX);
                 }
-//                vm.notifyEnableMic();
-                registerScenario("hvml", false);
                 sleep(500);
-                VoiceUIManagerUtil.enableScene(vm, ScenarioDefinitions.SCENE_COMMON);
             } catch (Exception e) {
                 Log.d(TAG, e.getMessage());
             }
@@ -152,11 +147,7 @@ public class baiduvoicesdk extends CordovaPlugin {
         }
         if (action.equals("voiceSpeech")) {
             try {
-                if (vm != null) {
-                    VoiceUIVariableUtil.VoiceUIVariableListHelper helper = new VoiceUIVariableUtil.VoiceUIVariableListHelper().addAccost(ScenarioDefinitions.ACC_ACCOST);
-                    VoiceUIManagerUtil.updateAppInfo(vm, helper.getVariableList(), true);
-                }
-//               vm.
+
             } catch (Exception e) {
 
             }
@@ -274,71 +265,6 @@ public class baiduvoicesdk extends CordovaPlugin {
         }
     };
 
-    private void registerScenario(String locale, Boolean home) {
-        Log.d(TAG, "registerScenario-S: " + locale + " : " + home.toString());
-
-        //ローカルフォルダー作成.
-        File localFolder = null;
-        if (home) {
-            localFolder = this.createLocalFolder("home");
-        } else {
-            localFolder = this.createLocalFolder("other");
-        }
-        if (localFolder == null) {
-            Log.e(TAG, "can not make local folder");
-            return;
-        }
-
-        //assetsフォルダー名取得.
-        String assetsFolderName = this.getAssetsScenarioFolderName(locale, home);
-
-        //assetsフォルダー内のファイル名リストを取得.
-        final AssetManager assetManager = context.getResources().getAssets();
-        String[] fileList = null;
-        try {
-            fileList = assetManager.list(assetsFolderName);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        final String hvmlPrefix = context.getPackageName().replace(".", "_");
-
-        //assetsからローカルへhvmlファイルをコピー.ただしHVMLファイル命名規則違反のファイルはコピーしない
-        for (String fileName : fileList) {
-            if (fileName.endsWith(".hvml")
-                    && fileName.startsWith(hvmlPrefix)
-                    ) {
-                Log.d(TAG, "hvml files = " + fileName);
-                this.copyFileFromAssetsToLocal(assetsFolderName, localFolder.getPath(), fileName);
-            }
-        }
-
-        //ローカルフォルダーのファイル名リストを取得.
-        File[] files = localFolder.listFiles();
-
-        //ローカルフォルダーのhvmlファイルのシナリオを登録する.
-        for (File file : files) {
-            Log.d(TAG, "registerScenario file=" + file.getAbsolutePath());
-            int result = VoiceUIManager.VOICEUI_ERROR;
-            try {
-                if (home) {
-                    //home用.
-                    result = vm.registerHomeScenario(file.getAbsolutePath());
-                    if (result == VoiceUIManager.VOICEUI_ERROR)
-                        Log.e(TAG, "registerScenario:Error");
-                } else {
-                    //other.
-                    result = vm.registerScenario(file.getAbsolutePath());
-                    if (result == VoiceUIManager.VOICEUI_ERROR)
-                        Log.e(TAG, "registerScenario:Error");
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.d(TAG, "registerScenario-E:" + home.toString());
-    }
 
     private File createLocalFolder(String childPath) {
         File folder = null;
