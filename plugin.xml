@@ -13,7 +13,6 @@
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml">
-            <uses-permission android:name="jp.co.sharp.android.permission.VOICEUI" />
             <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
             <uses-permission android:name="android.permission.RECORD_AUDIO" />
             <uses-permission android:name="android.permission.INTERNET" />
@@ -26,7 +25,6 @@
             <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
         </config-file>
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
-            <uses-library android:name="jp.co.sharp.android.voiceui.framework" android:required="true" />
             <meta-data
                     android:name="com.baidu.speech.APP_ID"
                     android:value="11194650" />
