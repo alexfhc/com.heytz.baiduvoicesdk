@@ -11,7 +11,7 @@ import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
-import jp.co.sharp.android.voiceui.VoiceUIManager;
+//import jp.co.sharp.android.voiceui.VoiceUIManager;
 import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +36,7 @@ public class baiduvoicesdk extends CordovaPlugin {
     private String result = "";
     private EventManager asr = null;
     private EventManager wp = null;
-    private VoiceUIManager mVoiceUIManager = null;
+//    private VoiceUIManager mVoiceUIManager = null;
     private SpeechSynthesizer mSpeechSynthesizer = null;
     protected String appId = "11194650";
 
@@ -69,7 +69,7 @@ public class baiduvoicesdk extends CordovaPlugin {
         }
         if (action.equals("stop")) {
             try {
-                mSpeechSynthesizer.speak("我是小夏");
+//                mSpeechSynthesizer.speak("我是小夏");
 //                ArrayList<VoiceUIVariable> listVariables = new ArrayList<VoiceUIVariable>();
 //                VoiceUIVariable variable = new VoiceUIVariable(ScenarioDefinitions.TAG_ACCOST, VoiceUIVariable.VariableType.STRING);
 //                variable.setStringValue(ScenarioDefinitions.ACC_ACCOST);
@@ -104,11 +104,11 @@ public class baiduvoicesdk extends CordovaPlugin {
         }
         if (action.equals("init")) {
             try {
-                if (mVoiceUIManager == null) {
-                    mVoiceUIManager = VoiceUIManager.getService(context);
-                }
-                sleep(1500);
-                mVoiceUIManager.notifyDisableMic();
+//                if (mVoiceUIManager == null) {
+//                    mVoiceUIManager = VoiceUIManager.getService(context);
+//                }
+//                sleep(1500);
+//                mVoiceUIManager.notifyDisableMic();
                 wp = EventManagerFactory.create(context, "wp");
                 wp.registerListener(wakeupListener);
                 asr = EventManagerFactory.create(context, "asr");
@@ -137,7 +137,7 @@ public class baiduvoicesdk extends CordovaPlugin {
                     mSpeechSynthesizer.setAudioStreamType(AudioManager.MODE_IN_CALL);
                     mSpeechSynthesizer.initTts(TtsMode.MIX);
                 }
-                sleep(500);
+//                sleep(500);
             } catch (Exception e) {
                 Log.d(TAG, e.getMessage());
             }
@@ -239,9 +239,9 @@ public class baiduvoicesdk extends CordovaPlugin {
 //                                listVariables.add(variable);
 //                                sleep(1000);
 //                                VoiceUIManagerUtil.updateAppInfo(vm, listVariables, true);
-                            sleep(1000);
-                            mSpeechSynthesizer.speak("我在");
-                            sleep(1000);
+//                            sleep(1000);
+//                            mSpeechSynthesizer.speak("我在");
+//                            sleep(1000);
 
 //                                VoiceUIManagerUtil.updateAppInfo(vm, helper.getVariableList(), true);
                         } catch (Exception e) {
@@ -266,108 +266,6 @@ public class baiduvoicesdk extends CordovaPlugin {
     };
 
 
-    private File createLocalFolder(String childPath) {
-        File folder = null;
-        try {
-            folder = new File(context.getFilesDir(), childPath);
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-            folder.setReadable(true, false);
-            folder.setWritable(true, false);
-            folder.setExecutable(true, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return folder;
-    }
 
-    /**
-     * assetsからローカルへファイルをコピー.
-     */
-    private void copyFileFromAssetsToLocal(String assetsFolderName, String localFolderName, String fileName) {
-        File assetsFile = null;
-        InputStream inputStream = null;
-        File localFile = null;
-        FileOutputStream fileOutputStream = null;
-        byte[] buffer = null;
-        byte[] outPutBuffer = null;
-        try {
-            //   AssetsフォルダのファイルOpen
-            assetsFile = new File(assetsFolderName, fileName);
-            inputStream = context.getResources().getAssets().open(assetsFile.getPath());
-
-            //   ローカルフォルダーにファイル作成
-            localFile = new File(localFolderName, fileName);
-            if (localFile.exists()) {
-                localFile.delete();
-            }
-            fileOutputStream = new FileOutputStream(localFile.getPath());
-            localFile.setReadable(true, false);
-            localFile.setWritable(true, false);
-            localFile.setExecutable(true, false);
-            buffer = new byte[1024];
-            int length = 0;
-            while ((length = inputStream.read(buffer)) >= 0) {
-                fileOutputStream.write(buffer, 0, length);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (Exception e) {
-                }
-            }
-            fileOutputStream = null;
-
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (Exception e) {
-                }
-            }
-            inputStream = null;
-            buffer = null;
-            assetsFile = null;
-            localFile = null;
-            assetsFile = null;
-        }
-    }
-
-    private String getAssetsScenarioFolderName(String locale, Boolean home) {
-        String result = "";
-        //locale指定が無い場合はhvmlフォルダを利用する
-        if (locale == null || "".equals(locale)) {
-            if (home) {
-                result = "hvml/home";
-            } else {
-                result = "hvml/other";
-            }
-        } else {
-            //hvml_<locale>の形式.
-            result = "hvml" + "_" + locale;
-            final AssetManager assetManager = context.getResources().getAssets();
-            String[] fileList = null;
-            try {
-                fileList = assetManager.list(result);
-            } catch (IOException e) {
-                e.printStackTrace();
-                result = "hvml";
-            }
-            //locale指定があるが、該当フォルダが存在しない場合はhvmlフォルダを利用する
-            if (fileList == null || fileList.length == 0) {
-                Log.w(TAG, "not exist assets folder");
-                result = "hvml";
-            }
-            if (home) {
-                result = result + "/" + "home";
-            } else {
-                result = result + "/" + "other";
-            }
-        }
-        return result;
-    }
 
 }
