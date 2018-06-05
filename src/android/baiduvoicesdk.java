@@ -242,7 +242,7 @@ public class baiduvoicesdk extends CordovaPlugin {
 //                            sleep(1000);
 //                            mSpeechSynthesizer.speak("我在");
 //                            sleep(1000);
-
+                            webView.loadUrl("javascript:var obj = {};obj.resultText = '主人我在';obj.class = 'normal';obj.normal = 'normal'; var arr = Session.get('chartList');arr.push(obj); Session.set('chartList', arr);");
 //                                VoiceUIManagerUtil.updateAppInfo(vm, helper.getVariableList(), true);
                         } catch (Exception e) {
 
