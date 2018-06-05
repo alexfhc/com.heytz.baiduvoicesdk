@@ -58,8 +58,8 @@ public class baiduvoicesdk extends CordovaPlugin {
             try {
 
                 HashMap map = new HashMap();
-                map.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUp.bin"); //唤醒词文件请去http://yuyin.baidu.com/wake下载
-                String json = "{\"kws-file\":\"assets:///WakeUp.bin\"}";
+                map.put(SpeechConstant.WP_WORDS_FILE, "assets:///WakeUpMirror.bin"); //唤醒词文件请去http://yuyin.baidu.com/wake下载
+                String json = "{\"kws-file\":\"assets:///WakeUpMirror.bin\"}";
                 wp.send(SpeechConstant.WAKEUP_START, json, null, 0, 0);
             } catch (Exception e) {
             }
@@ -187,7 +187,7 @@ public class baiduvoicesdk extends CordovaPlugin {
             }
             if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_EXIT)) {
                 // 识别结束
-                String json = "{\"kws-file\":\"assets:///WakeUp.bin\"}";
+                String json = "{\"kws-file\":\"assets:///WakeUpMirror.bin\"}";
                 wp.send(SpeechConstant.WAKEUP_START, json, null, 0, 0);
             }
             if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_ERROR)) {
